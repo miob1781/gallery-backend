@@ -1,13 +1,16 @@
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
-@Entity()
+@Entity({ })
 export class Image {
     @PrimaryGeneratedColumn()
     id: string;
 
-    @Column('char')
+    @Column('char', { nullable: false })
     cloudinaryId: string;
 
-    @Column('char', { array: true })
+    @Column('text', { nullable: true })
+    title: string;
+
+    @Column('text', { array: true, nullable: false })
     tags: string[];
 }

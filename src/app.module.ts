@@ -5,6 +5,7 @@ import { Image } from './image/entities/image.entity';
 import { ImageModule } from './image/image.module';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       database: process.env.DB_NAME,
       entities: [Image],
       synchronize: true,
+      namingStrategy: new SnakeNamingStrategy()
     }),
     ImageModule
   ],

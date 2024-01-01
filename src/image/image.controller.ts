@@ -1,34 +1,39 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { ImageService } from './image.service';
-import { CreateImageDto } from './dto/create-image.dto';
-import { UpdateImageDto } from './dto/update-image.dto';
+import { Image } from './entities/image.entity';
 
 @Controller('image')
 export class ImageController {
   constructor(private readonly imageService: ImageService) {}
 
   @Post()
-  create(@Body() createImageDto: CreateImageDto) {
-    return this.imageService.create(createImageDto);
+  create(@Body('cloudinaryId') cloudinaryId: string): void {
+    this.imageService.create(cloudinaryId);
   }
 
   @Get()
-  findAll() {
-    return this.imageService.findAll();
+  async findAll(): Promise<Image[]> {
+    const images: Image[] = await this.imageService.findAll();
+    return images;
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.imageService.findOne(+id);
+  @Delete(':cloudinaryId')
+  async remove(@Param('cloudinaryId') cloudinaryId: string): Promise<void> {
+    await this.imageService.remove(cloudinaryId);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateImageDto: UpdateImageDto) {
-    return this.imageService.update(+id, updateImageDto);
+  @Patch(':cloudinaryId/title')
+  async addOrEditTitle(@Param('cloudinaryId') cloudinaryId: string, @Body('title') title: string): Promise<void> {
+    await this.imageService.addOrEditTitle(cloudinaryId, title);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.imageService.remove(+id);
+  @Patch(':cloudinaryId/add-tag')
+  async addTag(@Param('cloudinaryId') cloudinaryId: string, @Body('tag') tag: string): Promise<void> {
+    await this.imageService.addTag(cloudinaryId, tag);
+  }
+
+  @Patch(':cloudinaryId/remove-tag')
+  async removeTag(@Param('cloudinaryId') cloudinaryId: string, @Body('tag') tag: string): Promise<void> {
+    await this.imageService.removeTag(cloudinaryId, tag);
   }
 }
