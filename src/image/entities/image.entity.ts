@@ -5,7 +5,7 @@ export class Image {
     @PrimaryGeneratedColumn()
     id: string;
 
-    @Column('char', { nullable: false })
+    @Column('text', { nullable: false })
     cloudinaryId: string;
 
     @Column('text', { nullable: true })
